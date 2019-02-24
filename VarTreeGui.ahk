@@ -1,6 +1,11 @@
-﻿
+﻿CoordMode, Caret, Screen
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
+CoordMode, Menu, Screen
+
 ; SetTimer,% Func("WinMoveThis"),1000
-SetTimer(Func("WinMoveThis"),20)
+SetTimer(Func("WinMoveThis"),400)
+; SetTimer(Func("WinMoveThis"),800)
 
 WinMoveThis(){
 	RegRead, x, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%, x
@@ -22,8 +27,31 @@ WinMoveThis(){
 	; msgbox, % g_config.alwaysontop " = g_config.alwaysontop"
 	if(g_config.alwaysontop)
 	    Winset, Alwaysontop, ,
+		;sleep,1000
+	;/¯¯¯¯ unfold ¯¯ 190224205428 ¯¯ 24.02.2019 20:54:28 ¯¯\
+	: autohotkey unfold SysListView 321
+	WinActivate
+	WinWaitActive,,,4
+	IfWinActive
+	{
+		suspend,on
+		; send,{down} ; open the list
+		; sleep,500
+		; SetKeyDelay,290,125 ;
+		; send,{right} ; open the list
+		; send,{right} ; open the list
+		; MouseClick , WhichButton, X, Y, ClickCount, Speed, DownOrUp, Relative
+        MouseGetPos,mX,mY
+		MouseClick, left, % x + 18, % y + 67,,1
+		; here the script is waiting some seconds. moves to next line if all vars are readed
+        MouseMove, % mX,% mY,0
+		suspend,off
+	}
+    ;\____ unfold __ 190224205435 __ 24.02.2019 20:54:35 __/
 	tooltip, % "Variables ahk_class AutoHotkeyGUI,," x "," y ", " w "," h
 	SetTimer(Func("WinMoveThis"),"Off")
+	run,% A_ScriptDir "\" g_config.logFileAddress
+	exitapp
 	}
 
 }

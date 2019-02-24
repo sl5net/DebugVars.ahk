@@ -188,6 +188,8 @@ class DvPropertyNode extends DvPropertyParentNode
             ; logFileAddress: "var.log.txt", alwaysontop: "true"  } }
             ; g_config.logFileAddress.["var"]["ignoreRegEx"]
             fileappend, % fileContent, % A_ScriptDir "\" g_config.logFileAddress, UTF-8
+            fileappend, % "Attention! this list may contain duplicate names!", % A_ScriptDir "\" "varnames-" g_config.logFileAddress, UTF-8
+            fileappend, % "\b" this.name "\b`n", % A_ScriptDir "\" "varnames-" g_config.logFileAddress, UTF-8
             if(false){
                 para2BackupFolder := A_ScriptDir "\Backups"
                 para1FileAddress := "var.log.txt"
