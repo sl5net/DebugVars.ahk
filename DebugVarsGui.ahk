@@ -1,6 +1,19 @@
-﻿
-#Include VarTreeGui.ahk
-#Include VarEditGui.ahk
+﻿#SingleInstance,Off
+#Include *i VarTreeGui.ahk
+#SingleInstance,Off
+#Include *i VarEditGui.ahk
+#SingleInstance,Off
+#Include *i dbgp.ahk
+#SingleInstance,Off
+
+#Include *i tools\DebugVars\VarTreeGui.ahk
+#SingleInstance,Off
+#Include *i tools\DebugVars\VarEditGui.ahk
+#SingleInstance,Off
+#Include *i tools\DebugVars\dbgp.ahk
+#SingleInstance,Off
+
+global g_config
 
 DvArg(dbg, a) { ; Quote parameter value 'a' if appropriate/supported
     if !InStr(a, " ")
@@ -133,6 +146,11 @@ class DvPropertyNode extends DvPropertyParentNode
         this.dbg := dbg
         this.fullname := prop.getAttribute("fullname")
         this.name := prop.getAttribute("name")
+        ; this.name := "############# test ################"
+
+
+
+
         this.xml := prop
         this.args := args
         props := prop.selectNodes("property")
@@ -143,6 +161,52 @@ class DvPropertyNode extends DvPropertyParentNode
         else {
             this._value := DBGp_Base64UTF8Decode(prop.text)
         }
+
+
+        ;/¯¯¯¯ doLog_matching_probNames ¯¯ 190224144433 ¯¯ 24.02.2019 14:44:33 ¯¯\
+        doLog_matching_probNames := true
+        if(doLog_matching_probNames){
+        alw := g_config["var"]["allowRegEx"]
+        ign  := g_config["var"]["ignoreRegEx"]
+        if(!g_config["var"]["allowRegEx"] && !g_config["var"]["ignoreRegEx"]){
+            msgbox,% "ups wrong config adjskha"
+            exitapp
+        }
+        doUseThisVar := false
+        if(RegExMatch(this.name,g_config["var"]["allowRegEx"])
+        && !RegExMatch(this.name,g_config["var"]["ignoreRegEx"])){
+            doUseThisVar := true
+            ; tooltip,% doUseThisVar ":" this.name " ? " g_config["var"]["allowRegEx"]
+            ; msgbox,% this.name " ? " g_config["var"]["allowRegEx"]
+            ; tooltip,% doUseThisVar ":" this.name " ? " g_config["var"]["allowRegEx"] "(" A_ThisFunc ":" A_LineNumber " " RegExReplace(A_LineFile, ".*\\")
+
+            ;exitapp
+        }
+        if(doUseThisVar){
+            ;fileContent := this.name " := """ this.GetValueString() """`n"
+            fileContent := this.name " := """ this._value """`n"
+            fileappend, % fileContent, % A_ScriptDir "\var.log.txt", UTF-8
+            if(false){
+                para2BackupFolder := A_ScriptDir "\Backups"
+                para1FileAddress := "var.log.txt"
+                commandLine := "SaveLast5_to_BackupSL5.ahk """ para1FileAddress """ """ para2BackupFolder """"
+                msgbox,% commandLine "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
+                RunWait, % commandLine, % A_ScriptDir
+            }
+
+            tooltip,% doUseThisVar ":" this.name " ? " g_config["var"]["allowRegEx"] "(" A_ThisFunc ":" A_LineNumber " " RegExReplace(A_LineFile, ".*\\")
+            ; msgbox,fileappend 19-02-24_13-49
+            ;this.name := doUseThisVar ":" this.name
+            this.name := "# " this.name
+        }
+        ; this.name := "saveIt:"doUseThisVar ":#" alw "#" ign "#line:" A_LineNumber "##" g_config["var"]["ignoreRegEx"] "#" this.name
+        }
+        ;\____ doLog_matching_probNames __ 190224144445 __ 24.02.2019 14:44:45 __/
+
+
+
+
+
         this.values := [this.name, this.GetValueString()]
     }
     

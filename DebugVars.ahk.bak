@@ -3,11 +3,6 @@
 #Include *i tools\DebugVars\DebugVarsGui.ahk
 
 
-g_config := { script: { ignoreRegEx: ".^", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
-alw := g_config["var"]["allowRegEx"]
-ign  := g_config["var"]["ignoreRegEx"]
-msgbox,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
-
 
 
 

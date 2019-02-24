@@ -1,5 +1,5 @@
-﻿
-#Include TreeListView.ahk
+﻿#Include *i TreeListView.ahk
+#Include *i tools\DebugVars\TreeListView.ahk
 
 /*
     VarTreeGui
