@@ -3,10 +3,57 @@
 #Include *i tools\DebugVars\DebugVarsGui.ahk
 
 
-g_config := { script: { ignoreRegEx: ".", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
+; g_config := { script: { ignoreRegEx: ".", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
+; g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: ".^", allowRegEx: ".", logFileAddress: "var.log.txt", alwaysontop: "true"  } }
+; "(\bprefs_|\bicon|\bhelpinfo_|\bDBA|\bgDBA|\bdft\|A_|Collection|config|clipboard)"
+ignVarNames =
+(
+\bg_
+\bA_
+timestamp toolTip scriptName MySQL
+ListBox
+\blbl_
+\bprefs_
+\bicon
+\bhelpinfo_
+\bDBA \bgDBA
+\bdft_
+Collection
+config
+clipboard
+milli
+ModiTime
+_Arch
+blank
+backup
+demoTestData
+comspec
+\bdiff
+\be\b
+\bi\b
+elapsed
+ErrorLevel
+IfMsgBox
+infoText
+HardDriveLetter
+helloWelcomeMessage
+\blll
+\blog
+\blang
+\bmin
+\bmouse
+\bmatch
+)
+ignVarNames := RegExReplace( ignVarNames , "m)[\s\n\r]+", "|" )
+global g_config
+g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: "(" ignVarNames ")" , allowRegEx: "." }, alwaysontop: "true", logFileAddress: "var.log.txt" }
 alw := g_config["var"]["allowRegEx"]
 ign  := g_config["var"]["ignoreRegEx"]
-tooltip,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
+; tooltip,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
+
+FileDelete, % A_ScriptDir "\" g_config.logFileAddress
+fileappend, % "alw##ign:" alw "##" ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")", % A_ScriptDir "\" g_config.logFileAddress, UTF-8
+
 
 
 #SingleInstance,Off

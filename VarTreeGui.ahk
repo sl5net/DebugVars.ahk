@@ -18,6 +18,10 @@ WinMoveThis(){
 	ifwinexist,Variables ahk_class AutoHotkeyGUI
 	{
 	WinMove,,,% x, % y,% w, % h
+	global g_config
+	; msgbox, % g_config.alwaysontop " = g_config.alwaysontop"
+	if(g_config.alwaysontop)
+	    Winset, Alwaysontop, ,
 	tooltip, % "Variables ahk_class AutoHotkeyGUI,," x "," y ", " w "," h
 	SetTimer(Func("WinMoveThis"),"Off")
 	}

@@ -1,3 +1,67 @@
+# experimental changes:
+
+filter scanned file by regex-filtter:
+
+g_config["script"]["ignoreRegEx"]
+
+log file with regex-filtter:
+
+example
+
+ignVarNames =
+(
+\bg_
+\bA_
+timestamp toolTip scriptName MySQL
+ListBox
+\blbl_
+\bprefs_
+\bicon
+\bhelpinfo_
+\bDBA \bgDBA
+\bdft_
+Collection
+config
+clipboard
+milli
+ModiTime
+_Arch
+blank
+backup
+demoTestData
+comspec
+\bdiff
+\be\b
+\bi\b
+elapsed
+ErrorLevel
+IfMsgBox
+infoText
+HardDriveLetter
+helloWelcomeMessage
+\blll
+\blog
+\blang
+\bmin
+\bmouse
+\bmatch
+)
+ignVarNames := RegExReplace( ignVarNames , "m)[\s\n\r]+", "|" )
+global g_config
+g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: "(" ignVarNames ")" , allowRegEx: "." }, alwaysontop: "true", logFileAddress: "var.log.txt" }
+alw := g_config["var"]["allowRegEx"]
+ign  := g_config["var"]["ignoreRegEx"]
+; tooltip,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
+
+FileDelete, % A_ScriptDir "\" g_config.logFileAddress
+fileappend, % "alw##ign:" alw "##" ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")", % A_ScriptDir "\" g_config.logFileAddress, UTF-8
+
+
+# thanks
+
+thanks very much to Lexikos https://github.com/Lexikos/DebugVars.ahk
+
+
 # DebugVars
 
 DebugVars is a script for AutoHotkey v1.1 which allows users to view and edit variables of other scripts while they are running.

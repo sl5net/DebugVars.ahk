@@ -1,4 +1,5 @@
-#Include TreeListView.ahk
+#Include *i TreeListView.ahk
+#Include *i tools\DebugVars\TreeListView.ahk
 
 Gui -DPIScale
 testobj := {one: [1,2,3], two: {foo: 1, bar: 2, baz: 3}}

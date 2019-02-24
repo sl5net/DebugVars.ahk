@@ -185,7 +185,9 @@ class DvPropertyNode extends DvPropertyParentNode
         if(doUseThisVar){
             ;fileContent := this.name " := """ this.GetValueString() """`n"
             fileContent := this.name " := """ this._value """`n"
-            fileappend, % fileContent, % A_ScriptDir "\var.log.txt", UTF-8
+            ; logFileAddress: "var.log.txt", alwaysontop: "true"  } }
+            ; g_config.logFileAddress.["var"]["ignoreRegEx"]
+            fileappend, % fileContent, % A_ScriptDir "\" g_config.logFileAddress, UTF-8
             if(false){
                 para2BackupFolder := A_ScriptDir "\Backups"
                 para1FileAddress := "var.log.txt"
@@ -194,7 +196,7 @@ class DvPropertyNode extends DvPropertyParentNode
                 RunWait, % commandLine, % A_ScriptDir
             }
 
-            tooltip,% doUseThisVar ":" this.name " ? " g_config["var"]["allowRegEx"] "(" A_ThisFunc ":" A_LineNumber " " RegExReplace(A_LineFile, ".*\\")
+            ; tooltip,% doUseThisVar ":" this.name " ? " g_config["var"]["allowRegEx"] "(" A_ThisFunc ":" A_LineNumber " " RegExReplace(A_LineFile, ".*\\")
             ; msgbox,fileappend 19-02-24_13-49
             ;this.name := doUseThisVar ":" this.name
             this.name := "# " this.name
