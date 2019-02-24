@@ -3,6 +3,9 @@ CoordMode, Mouse, Screen
 CoordMode, Pixel, Screen
 CoordMode, Menu, Screen
 
+if( instr(A_LineFile, A_ScriptName ))
+	exitapp
+
 ; SetTimer,% Func("WinMoveThis"),1000
 SetTimer(Func("WinMoveThis"),400)
 ; SetTimer(Func("WinMoveThis"),800)
@@ -25,13 +28,14 @@ WinMoveThis(){
 	WinMove,,,% x, % y,% w, % h
 	global g_config
 	; msgbox, % g_config.alwaysontop " = g_config.alwaysontop"
-	if(g_config.alwaysontop)
-	    Winset, Alwaysontop, ,
-		;sleep,1000
-	;/¯¯¯¯ unfold ¯¯ 190224205428 ¯¯ 24.02.2019 20:54:28 ¯¯\
-	: autohotkey unfold SysListView 321
 	WinActivate
 	WinWaitActive,,,4
+	if(g_config.alwaysontop){
+	    Winset, Alwaysontop, ,Variables ahk_class AutoHotkeyGUI
+		; msgbox,Alwaysontop
+    }
+	;/¯¯¯¯ unfold ¯¯ 190224205428 ¯¯ 24.02.2019 20:54:28 ¯¯\
+	; autohotkey unfold SysListView 321
 	IfWinActive
 	{
 		suspend,on
@@ -51,7 +55,8 @@ WinMoveThis(){
 	tooltip, % "Variables ahk_class AutoHotkeyGUI,," x "," y ", " w "," h
 	SetTimer(Func("WinMoveThis"),"Off")
 	run,% A_ScriptDir "\" g_config.logFileAddress
-	exitapp
+	if(g_config.closeGui_soonAsPossible)
+	    exitapp
 	}
 
 }

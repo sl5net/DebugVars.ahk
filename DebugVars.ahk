@@ -4,12 +4,12 @@
 
 
 ; g_config := { script: { ignoreRegEx: ".", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
-; g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: ".^", allowRegEx: ".", logFileAddress: "var.log.txt", alwaysontop: "true"  } }
+; g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: ".^", allowRegEx: ".", logFileAddress: "var.log.txt" } , alwaysontop: "true" , closeGui_soonAsPossible: "true"  }
 ; "(\bprefs_|\bicon|\bhelpinfo_|\bDBA|\bgDBA|\bdft\|A_|Collection|config|clipboard)"
 #include ignVarNames.conf.inc.ahk
 ignVarNames := RegExReplace( trim(ignVarNames) , "m)[\n\r\t]+", "|" )
 global g_config
-g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: "(" ((ignVarNames) ? ignVarNames : ".^" ) ")" , allowRegEx: "." }, alwaysontop: "true", logFileAddress: "var.log.txt" }
+g_config := { script: { ignoreRegEx: ".^", allowRegEx: "\bgi-every" }, var: { ignoreRegEx: "(" ((ignVarNames) ? ignVarNames : ".^" ) ")" , allowRegEx: "." }, logFileAddress: "var.log.txt" , alwaysontop: 1 , closeGui_soonAsPossible: 1  }
 alw := g_config["var"]["allowRegEx"]
 ign  := g_config["var"]["ignoreRegEx"]
 ; tooltip,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
