@@ -1,4 +1,4 @@
-﻿/* DBGp client functions - v1.0
+/* DBGp client functions - v1.0
  *  Enables scripts to debug other scripts via DBGp.
  *  Requires AutoHotkey_L v1.1.09+
  */
@@ -217,26 +217,8 @@ DBGp_CloseSession(session)
 DBGp_Base64UTF8Decode(ByRef base64) {
     if (base64 = "")
         return
-
     cp := DBGp_StringToBinary(result, base64, 1)
-	return StrGet(&result, cp, "utf-8")    
-	utf8 := StrGet(&result, cp, "utf-8")
-
-    if(0){
-    ;/Â¯Â¯Â¯Â¯ works Â¯Â¯ 190222092535 Â¯Â¯ 22.02.2019 09:25:35 Â¯Â¯\
-    ; but producing empty values in the treeeview 19-02-22_09-26
-    global g_config
-    if(!RegExMatch(utf8,g_config["var"]["allowRegEx"])
-    || RegExMatch(utf8,g_config["var"]["ignoreRegEx"])){
-        base64 := ""
-        return
-    }
-    ; msgbox,% utf8 " 19-02-22_09-18"
-    ;\____ works __ 190222092538 __ 22.02.2019 09:25:38 __/
-    }
-
-
-    return
+    return StrGet(&result, cp, "utf-8")
 }
 
 DBGp_Base64UTF8Encode(ByRef textdata) {
