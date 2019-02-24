@@ -1,5 +1,38 @@
-﻿#Include *i TreeListView.ahk
-#Include *i tools\DebugVars\TreeListView.ahk
+﻿
+; SetTimer,% Func("WinMoveThis"),1000
+SetTimer(Func("WinMoveThis"),20)
+
+WinMoveThis(){
+	RegRead, x, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%, x
+	RegRead, y, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%, y
+
+	RegRead, h, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%, h
+	RegRead, w, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%, w
+	h := ((h) ? h : 50) ; 300*(A_ScreenDPI/96)
+	w := ((w) ? w : 500*(A_ScreenDPI/96) )
+
+	x := ((x) ? x : " x" 200)
+	y := ((y) ? y : " y" 300)
+	DetectHiddenWindows,Off
+	SetTitleMatchMode,1
+	ifwinexist,Variables ahk_class AutoHotkeyGUI
+	{
+	WinMove,,,% x, % y,% w, % h
+	tooltip, % "Variables ahk_class AutoHotkeyGUI,," x "," y ", " w "," h
+	SetTimer(Func("WinMoveThis"),"Off")
+	}
+
+}
+
+SetTimer(timer,period){
+	if(!IsFunc(timer)&&!IsLabel(timer))
+		return
+	if(period == "Off")
+		SetTimer,%timer%,Off
+	else
+		SetTimer,%timer%,%period%
+}
+
 
 /*
     VarTreeGui
@@ -130,3 +163,6 @@ VarTreeGuiSize(hwnd, e, w, h) {
 VarTreeGuiContextMenu(hwnd, prms*) {
     VarTreeGui.Instances[hwnd].ContextMenu(prms*)
 }
+
+#Include *i TreeListView.ahk
+#Include *i tools\DebugVars\TreeListView.ahk

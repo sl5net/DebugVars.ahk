@@ -6,7 +6,7 @@
 g_config := { script: { ignoreRegEx: ".", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
 alw := g_config["var"]["allowRegEx"]
 ign  := g_config["var"]["ignoreRegEx"]
-msgbox,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
+tooltip,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
 
 
 
@@ -26,7 +26,17 @@ DBGp_StartListening()
 GroupAdd all, % "ahk_class AutoHotkeyGUI ahk_pid " DllCall("GetCurrentProcessId", "uint")
 OnExit("CloseAll")
 CloseAll(exitReason:="") {
+
+	WinGetPos,x,y,w,h,Variables ahk_class AutoHotkeyGUI
+	if(x && y && w && h){
+        RegWrite, REG_SZ, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%,w, % w
+        RegWrite, REG_SZ, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%,h, % h
+        RegWrite, REG_SZ, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%,x, % x
+        RegWrite, REG_SZ, HKEY_CURRENT_USER, SOFTWARE\sl5net\gi\%A_ScriptName%,y, % y
+	}
+
     DetectHiddenWindows Off
+
     if exitReason && WinExist("ahk_group all") {
         ; Start a new thread which can be interrupted (OnExit can't).
         SetTimer CloseAll, -10
@@ -35,6 +45,16 @@ CloseAll(exitReason:="") {
     GroupClose all
     ExitApp
 }
+
+
+
+
+
+
+
+
+
+
 
 OnMessage(2, Func("OnWmDestroy"))
 OnWmDestroy(wParam, lParam, msg, hwnd) {
@@ -74,7 +94,7 @@ class DvAllScriptsNode extends DvNodeBase
 
             global g_config
 
-            msgbox,% g_config["script"]["ignoreRegEx"]
+            ;msgbox,% g_config["script"]["ignoreRegEx"]
             if(!RegExMatch(WinTitleScriptLong,g_config["script"]["allowRegEx"]))
                 continue
             if(RegExMatch(WinTitleScriptLong,g_config["script"]["ignoreRegEx"]))
