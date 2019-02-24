@@ -3,7 +3,7 @@
 #Include *i tools\DebugVars\DebugVarsGui.ahk
 
 
-g_config := { script: { ignoreRegEx: ".^", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
+g_config := { script: { ignoreRegEx: ".", allowRegEx: ".*" }, var: { ignoreRegEx: ".^", allowRegEx: "(Adress|Address)" } }
 alw := g_config["var"]["allowRegEx"]
 ign  := g_config["var"]["ignoreRegEx"]
 msgbox,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
@@ -66,6 +66,21 @@ class DvAllScriptsNode extends DvNodeBase
             PostMessage 0x44, 0, 0,, ahk_id %script_id%  ; WM_COMMNOTIFY, WM_NULL
             if ErrorLevel  ; Likely blocked by UIPI (won't be able to attach).
                 continue
+
+
+
+			WinGetTitle, WinTitleScriptLong , ahk_id %script_id% ; , WinText, ExcludeTitle, ExcludeText
+			;MsgBox, % substr("gi-everywhere.ahk", 1, strlen("gi-everywhere.ahk"))
+
+            global g_config
+
+            msgbox,% g_config["script"]["ignoreRegEx"]
+            if(!RegExMatch(WinTitleScriptLong,g_config["script"]["allowRegEx"]))
+                continue
+            if(RegExMatch(WinTitleScriptLong,g_config["script"]["ignoreRegEx"]))
+                continue
+
+
             script_ids.Push(script_id)
         }
         return script_ids
