@@ -13,6 +13,9 @@
 #Include *i tools\DebugVars\dbgp.ahk
 #SingleInstance,Off
 
+if( instr(A_LineFile, A_ScriptName ))
+	exitapp
+
 global g_config
 
 DvArg(dbg, a) { ; Quote parameter value 'a' if appropriate/supported

@@ -1,4 +1,6 @@
-﻿
+﻿if( instr(A_LineFile, A_ScriptName ))
+	exitapp
+
 class TreeListView extends TreeListView._Base
 {
     static ICON_SIZE := 16
