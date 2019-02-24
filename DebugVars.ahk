@@ -9,6 +9,14 @@ ign  := g_config["var"]["ignoreRegEx"]
 tooltip,% alw ign "(" A_LineNumber " " RegExReplace(A_LineFile, ".*\\", "") ")"
 
 
+#SingleInstance,Off
+DetectHiddenWindows Off
+If(WinExist( "Variables ahk_class AutoHotkeyGUI"  )){
+	WinActivate,
+	ExitApp
+}
+; #NoTrayIcon
+
 
 
 global ShortValueLimit := 64
